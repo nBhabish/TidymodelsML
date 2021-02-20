@@ -3,7 +3,7 @@ R tidymodels concepts
 
 ## Concepts Covered
 
-- Bootstrapping
+- Cross Validation
 - Linear Regression
 - Logistic Regression
 - Ridge Regression
