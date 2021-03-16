@@ -2,8 +2,7 @@
 
 pacman::p_load(tidyverse,
                tidymodels,
-               mlbench,
-               naivebayes)
+               mlbench)
 
 
 # Setting seed ------------------------------------------------------------
