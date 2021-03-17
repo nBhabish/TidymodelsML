@@ -24,8 +24,6 @@ titanic <- titanic %>%
 
 titanic
 
-
-
 # Splitting dataset -------------------------------------------------------
 
 titanic_split <- initial_split(titanic, strata = survived)
@@ -103,3 +101,28 @@ CV_ROC <- titanic_rsamples %>%
   roc_curve(truth = survived, estimate = .pred_1, event_level = "second")
 
 CV_ROC %>% autoplot()
+
+
+# Comparison with test data -----------------------------------------------
+
+titanic_test %>% 
+  add_column(
+    predict(titanic_fit, new_data = titanic_test, type = "prob")
+  ) %>% 
+  roc_auc(truth = survived, .pred_1, event_level = "second")
+
+
+test_ROC <- titanic_test %>% 
+  add_column(
+    predict(titanic_fit, new_data = titanic_test, type = "prob")
+             ) %>% 
+  roc_curve(truth = survived, .pred_1, event_level = "second") %>% 
+  add_column(id = "test")
+
+
+# Visualizing our prediction ----------------------------------------------
+
+bind_rows(CV_ROC, test_ROC) %>% 
+  ggplot(aes(1-specificity, sensitivity, col = id))+
+  geom_path()+
+  scale_color_brewer(palette = "Set2")
